@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import {
   Dialog,
   DialogTrigger,
@@ -11,110 +11,194 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 
-const projects = [
+type Shot = { n: number; alt: string; note: string };
+type Project = {
+  trade: string;
+  title: string;
+  blurb: string;
+  shots: Shot[];
+};
+
+const projects: Project[] = [
   {
-    name: 'The finishing touches.',
-    category: 'TRIM & FINISH CARPENTRY',
-    description:
-      'Crown molding, crisp corners, and the details that bring a room together.',
-    photos: [8, 9, 3, 5, 7, 10, 12],
-    alts: [
-      'White crown molding and door trim in a living room',
-      'Crown molding around an interior wall',
-      'White crown molding at a ceiling corner',
-      'Interior room with crown molding and artwork',
-      'Finished crown molding along two walls',
-      'Crown molding around a living room ceiling',
-      'Close view of white molding and door casing',
+    trade: 'Trim & finishing',
+    title: 'Crown, run tight to the ceiling.',
+    blurb:
+      'Sprung crown, coped inside corners, mitres that stay shut through a Vermont winter.',
+    shots: [
+      {
+        n: 8,
+        alt: 'White crown molding turning an outside corner above framed artwork',
+        note: 'Outside corner, mitred and glued.',
+      },
+      {
+        n: 12,
+        alt: 'Crown molding profile turning a corner beside a doorway',
+        note: 'Profile carried past the doorway.',
+      },
+      {
+        n: 3,
+        alt: 'White crown molding running into a ceiling corner',
+        note: 'Inside corner, coped not mitred.',
+      },
+      {
+        n: 9,
+        alt: 'Crown molding meeting a door casing beside a table lamp',
+        note: 'Crown dying into the casing.',
+      },
+      {
+        n: 10,
+        alt: 'Crown molding along a living-room ceiling above hanging wall art',
+        note: 'One clean line, wall to wall.',
+      },
+      {
+        n: 7,
+        alt: 'Crown molding along a plain painted wall',
+        note: 'Nothing to hide behind.',
+      },
+      {
+        n: 5,
+        alt: 'Living room with crown molding, an open doorway and framed artwork',
+        note: 'Finished, furniture back in.',
+      },
     ],
   },
   {
-    name: 'A better step outside.',
-    category: 'DECKS & PORCHES',
-    description:
-      'Outdoor projects, from the structure underneath to the surface you see.',
-    photos: [1, 2, 14, 15],
-    alts: [
-      'Gray deck boards with a picture-frame border beside garden plants',
-      'Completed deck surface beside a home',
-      'Porch decking removed during renovation',
-      'Porch framing and edge beam during work',
+    trade: 'Stairs & flooring',
+    title: 'Reclaimed oak, fourteen risers.',
+    blurb:
+      'Treads, risers, skirt boards and nosing returns &mdash; scribed to the stair that is actually there.',
+    shots: [
+      {
+        n: 17,
+        alt: 'A finished staircase with reclaimed-oak treads and risers between white skirt boards',
+        note: 'Looking up the finished flight.',
+      },
+      {
+        n: 16,
+        alt: 'A stepped white skirt board scribed around reclaimed-oak treads at a landing',
+        note: 'Skirt board, stepped down.',
+      },
+      {
+        n: 19,
+        alt: 'Close view of a white nosing return fitted tight to a stair tread',
+        note: 'The return. This is the tell.',
+      },
+      {
+        n: 18,
+        alt: 'A stair landing where the skirt board dies into the door casing',
+        note: 'Skirt into casing at the top.',
+      },
+      {
+        n: 20,
+        alt: 'A staircase seen from the foot, looking up towards a lit doorway',
+        note: 'Same stair, from the bottom.',
+      },
     ],
   },
   {
-    name: 'Every step considered.',
-    category: 'FLOORING & STAIR DETAILS',
-    description:
-      'Flooring, stair finishes, and carefully fitted trim, shown up close.',
-    photos: [16, 17, 18, 19, 20],
-    alts: [
-      'Wood-look stair treads with white edge trim',
-      'Staircase with wood-look flooring',
-      'Close view of stair trim at a doorway',
-      'White stair edging fitted around a tread',
-      'Full staircase viewed from below',
+    trade: 'Decks & porches',
+    title: 'Rot out. Structure back in.',
+    blurb:
+      'Ledger, joists at sixteen on centre, posts on solid ground &mdash; then the part you walk on.',
+    shots: [
+      {
+        n: 1,
+        alt: 'A finished grey composite deck with a mitred perimeter border beside a planted garden bed',
+        note: 'Border mitred right round.',
+      },
+      {
+        n: 2,
+        alt: 'The same finished deck photographed from the garden path',
+        note: 'Boards running true to the house.',
+      },
+      {
+        n: 14,
+        alt: 'An old porch with the decking torn back, showing rotted framing beneath',
+        note: 'What was under the old boards.',
+      },
+      {
+        n: 15,
+        alt: 'The same porch after tear-out, with a new pressure-treated rim beam sitting on posts',
+        note: 'New rim beam, new posts.',
+      },
     ],
   },
   {
-    name: 'Make your space work.',
-    category: 'REMODELING & REPAIRS',
-    description: 'Practical improvements for the home, inside and out.',
-    photos: [13, 11, 4, 6],
-    alts: [
-      'Interior remodeling in progress with recessed lighting',
-      'Sliding door and window work in progress',
-      'Wooden sink cabinet with doors closed',
-      'Sink cabinet interior with a fitted plywood base',
+    trade: 'Doors, windows & repairs',
+    title: 'The jobs nobody photographs.',
+    blurb:
+      'Openings trimmed out, rooms put back together, cabinets rebuilt from the base up.',
+    shots: [
+      {
+        n: 11,
+        alt: 'A door and window opening being trimmed out over housewrap during an exterior remodel',
+        note: 'Trimming out over the wrap.',
+      },
+      {
+        n: 13,
+        alt: 'An interior remodel in progress with fresh paint, a recessed light and wood-look flooring',
+        note: 'Room going back together.',
+      },
+      {
+        n: 6,
+        alt: 'An open vanity cabinet showing a newly fitted plywood base under the sink',
+        note: 'New base, cut to fit the trap.',
+      },
+      {
+        n: 4,
+        alt: 'The same vanity cabinet with its doors closed on a tiled floor',
+        note: 'Closed up. You would never know.',
+      },
     ],
   },
 ];
-const imagePath = (n: number) =>
-  `/images/roger-${String(n).padStart(2, '0')}.webp`;
 
-function ProjectCard({
-  project,
-  index,
-}: {
-  project: (typeof projects)[number];
-  index: number;
-}) {
+const src = (n: number) => `/images/roger-${String(n).padStart(2, '0')}.webp`;
+/* fixed, so the pinned-up angles are the same on every render */
+const TILT = ['-1.6deg', '1.2deg', '-0.9deg', '1.8deg'];
+
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const [active, setActive] = useState(0);
-  const move = (delta: number) =>
-    setActive(
-      (n) => (n + delta + project.photos.length) % project.photos.length,
-    );
+  const count = project.shots.length;
+  const move = (d: number) => setActive((n) => (n + d + count) % count);
+  const shot = project.shots[active];
+
   return (
-    <Dialog
-      onOpenChange={(open) => {
-        if (open) setActive(0);
-      }}
-    >
+    <Dialog onOpenChange={(open) => open && setActive(0)}>
       <DialogTrigger
-        className="project-card"
-        aria-label={`View ${project.category.toLowerCase()} gallery, ${project.photos.length} photos`}
+        className="card"
+        style={{ '--tilt': TILT[index % TILT.length] } as React.CSSProperties}
+        aria-label={`Open ${project.trade}, ${count} photographs`}
       >
-        <div className="project-image">
+        <span className="tape" aria-hidden="true" />
+        <span className="card-photo">
           <img
-            src={imagePath(project.photos[0])}
-            alt={project.alts[0]}
+            src={src(project.shots[0].n)}
+            alt={project.shots[0].alt}
             width="1400"
-            height="1800"
+            height="1867"
             loading="lazy"
           />
-          <span className="photo-count">{project.photos.length} PHOTOS</span>
-          <span className="project-open" aria-hidden="true">
-            <ArrowUpRight size={25} />
+          <span className="card-count">
+            {count} shots <Maximize2 size={13} aria-hidden="true" />
           </span>
-        </div>
-        <div className="project-meta">
-          <span className="eyebrow">{project.category}</span>
-          <span>0{index + 1}</span>
-        </div>
-        <h3>{project.name}</h3>
-        <p>{project.description}</p>
+        </span>
+        <span className="card-body">
+          <span className="card-trade">
+            <i aria-hidden="true">{String(index + 1).padStart(2, '0')}</i>
+            {project.trade}
+          </span>
+          <strong>{project.title}</strong>
+          <span
+            className="card-blurb"
+            dangerouslySetInnerHTML={{ __html: project.blurb }}
+          />
+        </span>
       </DialogTrigger>
+
       <DialogContent
-        className="gallery-dialog"
+        className="lightbox"
         onKeyDown={(event) => {
           if (event.key === 'ArrowRight') {
             event.preventDefault();
@@ -126,31 +210,31 @@ function ProjectCard({
           }
         }}
       >
-        <div className="gallery-heading">
-          <DialogTitle>{project.category}</DialogTitle>
-          <DialogDescription>
-            Project photos from Roger Dixon’s portfolio.
-          </DialogDescription>
+        <div className="lightbox-head">
+          <DialogTitle>{project.trade}</DialogTitle>
+          <DialogDescription>{project.title}</DialogDescription>
         </div>
         <img
-          className="gallery-large"
-          src={imagePath(project.photos[active])}
-          alt={project.alts[active]}
+          className="lightbox-photo"
+          src={src(shot.n)}
+          alt={shot.alt}
           width="1400"
-          height="1800"
+          height="1867"
         />
-        <div className="gallery-controls">
-          <button aria-label="Previous photo" onClick={() => move(-1)}>
-            <ChevronLeft size={22} />
+        <div className="lightbox-foot">
+          <button type="button" aria-label="Previous photograph" onClick={() => move(-1)}>
+            <ChevronLeft size={20} aria-hidden="true" />
           </button>
-          <p aria-live="polite">
-            {active + 1} / {project.photos.length}
+          <p className="lightbox-note">
+            <span aria-live="polite">
+              {active + 1} / {count}
+            </span>
+            {shot.note}
           </p>
-          <button aria-label="Next photo" onClick={() => move(1)}>
-            <ChevronRight size={22} />
+          <button type="button" aria-label="Next photograph" onClick={() => move(1)}>
+            <ChevronRight size={20} aria-hidden="true" />
           </button>
         </div>
-        <p className="gallery-caption">{project.alts[active]}</p>
       </DialogContent>
     </Dialog>
   );
@@ -158,9 +242,9 @@ function ProjectCard({
 
 export default function ProjectGallery() {
   return (
-    <div className="project-grid">
+    <div className="card-wall">
       {projects.map((project, index) => (
-        <ProjectCard key={project.category} project={project} index={index} />
+        <ProjectCard key={project.trade} project={project} index={index} />
       ))}
     </div>
   );

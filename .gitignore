@@ -39,3 +39,6 @@ next-env.d.ts
 
 # Downloaded source archive retained locally
 /reference/
+
+# typescript build cache
+*.tsbuildinfo
