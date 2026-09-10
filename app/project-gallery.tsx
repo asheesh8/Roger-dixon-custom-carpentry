@@ -11,7 +11,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 
-type Shot = { n: number; alt: string; note: string };
+type Shot = { n: number | string; alt: string; note: string };
 type Project = {
   trade: string;
   title: string;
@@ -122,10 +122,38 @@ const projects: Project[] = [
         alt: 'The same porch after tear-out, with a new pressure-treated rim beam sitting on posts',
         note: 'New rim beam, new posts.',
       },
+      {
+        n: 'pergola',
+        alt: 'A timber pergola with a lattice roof built over an outdoor brick oven',
+        note: 'Pergola over the oven.',
+      },
     ],
   },
   {
-    trade: 'Doors, windows & repairs',
+    trade: 'Framing & structure',
+    title: 'Before any of it is pretty.',
+    blurb:
+      'Walls, headers, engineered joists &mdash; the part that has to be right before a stick of trim goes up.',
+    shots: [
+      {
+        n: 'framing-header',
+        alt: 'A framed wall with a built-up header and posts, braced and squared, in winter woods',
+        note: 'Header and posts, braced off.',
+      },
+      {
+        n: 'framing-joists',
+        alt: 'Engineered I-joists running overhead across a framed opening',
+        note: 'I-joists, hung and rolled.',
+      },
+      {
+        n: 'roger-onsite',
+        alt: 'Roger Dixon standing with a hammer inside a house he is framing in winter',
+        note: 'Cold morning. Still framing.',
+      },
+    ],
+  },
+  {
+    trade: 'Repairs & remodeling',
     title: 'The jobs nobody photographs.',
     blurb:
       'Openings trimmed out, rooms put back together, cabinets rebuilt from the base up.',
@@ -150,11 +178,19 @@ const projects: Project[] = [
         alt: 'The same vanity cabinet with its doors closed on a tiled floor',
         note: 'Closed up. You would never know.',
       },
+      {
+        n: 'corridor',
+        alt: 'A commercial corridor with patched drywall and fresh paint, a wet paint sign on the wall',
+        note: 'Commercial corridor, patched out.',
+      },
     ],
   },
 ];
 
-const src = (n: number) => `/images/roger-${String(n).padStart(2, '0')}.webp`;
+const src = (n: number | string) =>
+  typeof n === 'number'
+    ? `/images/roger-${String(n).padStart(2, '0')}.webp`
+    : `/images/${n}.webp`;
 /* fixed, so the pinned-up angles are the same on every render */
 const TILT = ['-1.6deg', '1.2deg', '-0.9deg', '1.8deg'];
 
